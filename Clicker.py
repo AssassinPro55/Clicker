@@ -66,12 +66,12 @@ class Zashigalka(GameSprite):
         return self.rect.collidepoint(x, y)
     
 # Очки
-score = 5000
+score = 0
 score_click = 1
 bot_click = 0
 price_krest = {"krest": 20 }
-price_lighter = {"lighter": 100 }
-price_key = {"key": 300}
+price_lighter = {"lighter": 150 }
+price_key = {"key": 1000}
 price_zashigalka = {"zashigalka": 5000}
 
 # Текст
@@ -106,21 +106,23 @@ while game:
             if button.collidepoint(x, y):
                 score += score_click
             if krest.collidepoint(x, y):
-                if score >= 10:
+                if score >= 20:
                     score_click += 1
                     score -= price_krest["krest"]
             if lighter.collidepoint(x, y):
-                if score >= 100:
+                if score >= 150:
                     score_click += 10
                     score -= price_lighter["lighter"]
             if key.collidepoint(x, y):
-                if score >= 300 and finish != True:
-                    bot_click += 30
+                if score >= 1000 and finish != True:
+                    bot_click += 50
                     score -= price_key["key"]
             if zashigalka.collidepoint(x, y):
-                if score >= 5000:
+                if score >= 5000 and finish != True:
+                    bot_click += 100
                     score -= price_zashigalka["zashigalka"]
-                    window.blit(text_WIN, (300, 300))
+
+
 
 
 
@@ -152,7 +154,6 @@ while game:
         text_score = font1.render("Баллы: " + str(score), 1, (255, 255, 255))
         text_click = font1.render("За клик: " + str(score_click), 1, (255, 255, 255))
         text_bot_click = font1.render("За клик бота: " + str(bot_click), 1, (255, 255, 255))
-        text_WIN = font1.render("YOU WIN!!!", (255, 255, 255))
         window.blit(text_score, (10, 20))
         window.blit(text_click, (10, 70))
         window.blit(text_bot_click, (10, 120))
