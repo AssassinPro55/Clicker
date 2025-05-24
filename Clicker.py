@@ -69,14 +69,16 @@ class Zashigalka(GameSprite):
 score = 0
 score_click = 1
 bot_click = 0
-price_krest = {"krest": 20 }
-price_lighter = {"lighter": 150 }
-price_key = {"key": 1000}
-price_zashigalka = {"zashigalka": 5000}
-
+price = {
+    "krest": 20 ,
+    "lighter": 200 ,
+    "key": 1000,
+    "zashigalka": 2000,
+}
 # Текст
 font.init()
 font1 = font.SysFont('Arial', 45)
+font2 = font.SysFont('Arial', 23)
 
 # Музыка
 mixer.init()
@@ -87,10 +89,10 @@ mixer.music.play(-1)
 # Спрайты
 button = Player("Button.png", 140, 260, 150, 150)
 upgrades = Upgrade("Updates_list.png", 380, 10, 520, 520)
-krest = Krest("Krest.jpg", 530, 90, 80, 230)
-lighter = Lighter("Lighter.jpg", 530, 180, 80, 230)
-key = Key("Key.jpg", 530, 270, 80, 230)
-zashigalka = Zashigalka("Zashigalka.jpg", 530, 360, 80, 230)
+krest = Krest("Krest.jpg", 610, 90, 70, 200)
+lighter = Lighter("Lighter.jpg", 610, 180, 70, 200)
+key = Key("Key.jpg", 610, 270, 70, 200)
+zashigalka = Zashigalka("Zashigalka.jpg", 610, 360, 70, 200)
 
 
 # Цикл
@@ -106,23 +108,27 @@ while game:
             if button.collidepoint(x, y):
                 score += score_click
             if krest.collidepoint(x, y):
-                if score >= 20:
+                if score >= price['krest']:
                     score_click += 1
-                    score -= price_krest["krest"]
+                    score -= price["krest"]
+                    price["krest"] *= 2 
             if lighter.collidepoint(x, y):
-                if score >= 150:
+                if score >= price['lighter']:
                     score_click += 10
-                    score -= price_lighter["lighter"]
+                    score -= price["lighter"]
+                    price["lighter"] *= 2 
             if key.collidepoint(x, y):
-                if score >= 1000 and finish != True:
+                if score >= price["key"] and finish != True:
                     bot_click += 50
-                    score -= price_key["key"]
+                    score -= price["key"]
+                    price["key"] += 500 
             if zashigalka.collidepoint(x, y):
-                if score >= 5000 and finish != True:
+                if score >= price["zashigalka"] and finish != True:
                     bot_click += 100
-                    score -= price_zashigalka["zashigalka"]
+                    score -= price["zashigalka"]
+                    price["zashigalka"] += 1000 
 
-
+                    
 
 
 
@@ -154,9 +160,25 @@ while game:
         text_score = font1.render("Баллы: " + str(score), 1, (255, 255, 255))
         text_click = font1.render("За клик: " + str(score_click), 1, (255, 255, 255))
         text_bot_click = font1.render("За клик бота: " + str(bot_click), 1, (255, 255, 255))
+        text_score_key_price = font2.render(f"Цена: {price['key']}", 1, (0, 0, 0))
+        text_score_key_value = font2.render("+50 к клику бота", True, (0, 0, 0))
+        text_score_krest_price = font2.render(f"Цена: {price['krest']}", 1, (0, 0, 0))
+        text_score_krest_value = font2.render("+1 к клику", True, (0, 0, 0))
+        text_score_lighter_price = font2.render(f"Цена: {price['lighter']}", 1, (0, 0, 0))
+        text_score_lighter_value = font2.render("+10 к клику", True, (0, 0, 0))
+        text_score_zashigalka_price = font2.render(f"Цена: {price['zashigalka']}", 1, (0, 0, 0))
+        text_score_zashigalka_value = font2.render("+100 к клику бота", True, (0, 0, 0))
         window.blit(text_score, (10, 20))
         window.blit(text_click, (10, 70))
         window.blit(text_bot_click, (10, 120))
+        window.blit(text_score_krest_price, (475, 100))
+        window.blit(text_score_krest_value, (475, 125))
+        window.blit(text_score_lighter_price, (475, 190))
+        window.blit(text_score_lighter_value, (475, 215))
+        window.blit(text_score_key_price, (465, 280))
+        window.blit(text_score_key_value, (465, 305))
+        window.blit(text_score_zashigalka_price, (460, 370))
+        window.blit(text_score_zashigalka_value, (460, 395))
 
         display.update()
     clock.tick(FPS)
